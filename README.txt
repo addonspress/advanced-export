@@ -1,6 +1,6 @@
 === Advanced Export : with Options to Export Widget, Customizer and Media Files ===
 
-Contributors: addonpress
+Contributors: addonspress
 Donate link: https://addonspress.com/
 Tags: export, advanced export, demo export, theme export, widget export, customizer export
 Requires at least: 4.5
