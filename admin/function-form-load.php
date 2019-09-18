@@ -5,8 +5,8 @@
  * @param string $post_type The post type. Default 'post'.
  */
 global $wpdb, $wp_locale;
-if( !function_exists( 'wp_demo_export_date_options') ){
-	function wp_demo_export_date_options( $post_type = 'post' ) {
+if( !function_exists( 'advanced_export_date_options') ){
+	function advanced_export_date_options( $post_type = 'post' ) {
 		global $wpdb, $wp_locale;
 
 		$months = $wpdb->get_results( $wpdb->prepare( "
@@ -30,67 +30,67 @@ if( !function_exists( 'wp_demo_export_date_options') ){
 	}
 }
 
-function wp_demo_export_form(){
+function advanced_export_form(){
 	global $wpdb, $wp_locale;
 	?>
 	<div class="wrap">
-		<h1><?php esc_html_e('Export Demo Zip','wp-demo-export'); ?></h1>
+		<h1><?php esc_html_e('Export Zip','advanced-export'); ?></h1>
 
-		<p><?php esc_html_e('When you click the button below Plugin will create a demo Zip to save to your computer.','wp-demo-export'); ?></p>
-		<p><?php esc_html_e('Once you&#8217;ve saved the download demo zip file, you can use the Import function in another WordPress installation to import the demo from this site.','wp-demo-export'); ?></p>
+		<p><?php esc_html_e('When you click the button below Plugin will create a Zip file to save to your computer.','advanced-export'); ?></p>
+		<p><?php esc_html_e('Once you&#8217;ve saved the download zip file, you can use the Import function in another WordPress installation to import the content from this site.','advanced-export'); ?></p>
 
-		<h2><?php esc_html_e('Choose what to export','wp-demo-export'); ?></h2>
-		<form method="post" id="wp-demo-export-filters" action="">
+		<h2><?php esc_html_e('Choose what to export','advanced-export'); ?></h2>
+		<form method="post" id="advanced-export-filters" action="">
 			<?php
-			wp_nonce_field( 'wp-demo-export' );
+			wp_nonce_field( 'advanced-export' );
 			?>
-			<legend class="screen-reader-text"><?php esc_html_e('Content to export','wp-demo-export'); ?></legend>
+			<legend class="screen-reader-text"><?php esc_html_e('Content to export','advanced-export'); ?></legend>
 			<fieldset class="single-item">
-				<input type="hidden" name="wp-demo-export-download" value="true" />
-				<p><label><input type="radio" name="content" value="all" checked="checked" aria-describedby="all-content-desc" /><?php esc_html_e('All content','wp-demo-export'); ?></label></p>
+				<input type="hidden" name="advanced-export-download" value="true" />
+				<p><label><input type="radio" name="content" value="all" checked="checked" aria-describedby="all-content-desc" /><?php esc_html_e('All content','advanced-export'); ?></label></p>
 				<p class="description" id="all-content-desc">
-					<?php esc_html_e('This will contain all of your posts, pages, comments, custom fields, terms, navigation menus, and custom posts.','wp-demo-export'); ?>
+					<?php esc_html_e('This will contain all of your posts, pages, comments, custom fields, terms, navigation menus, and custom posts.','advanced-export'); ?>
 				</p>
 
-				<p><label><input type="radio" name="content" value="posts" /> <?php esc_html_e('Posts','wp-demo-export'); ?></label></p>
-				<ul id="post-filters" class="wp-demo-export-filters">
+				<p><label><input type="radio" name="content" value="posts" /> <?php esc_html_e('Posts','advanced-export'); ?></label></p>
+				<ul id="post-filters" class="advanced-export-filters">
 					<li>
 						<label><span class="label-responsive"><?php _e( 'Categories:' ); ?></span>
-							<?php wp_dropdown_categories( array( 'show_option_all' => esc_html__('All','demo-export-imort') ) ); ?>
+							<?php wp_dropdown_categories( array( 'show_option_all' => esc_html__('All','advanced-export') ) ); ?>
 						</label>
 					</li>
 					<li>
-						<label><span class="label-responsive"><?php esc_html_e( 'Authors:' ,'wp-demo-export'); ?></span>
+						<label><span class="label-responsive"><?php esc_html_e( 'Authors:' ,'advanced-export'); ?></span>
 							<?php
 							$authors = $wpdb->get_col( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = 'post'" );
 							wp_dropdown_users( array(
 								'include' => $authors,
 								'name' => 'post_author',
 								'multi' => true,
-								'show_option_all' => esc_html__( 'All' ,'wp-demo-export'),
+								'show_option_all' => esc_html__( 'All' ,'advanced-export'),
 								'show' => 'display_name_with_login',
 							) ); ?>
 						</label>
 					</li>
 					<li>
 						<fieldset>
-							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','wp-demo-export' ); ?></legend>
-							<label for="post-start-date" class="label-responsive"><?php esc_html_e( 'Start date:','wp-demo-export' ); ?></label>
+							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','advanced-export' ); ?></legend>
+							<label for="post-start-date" class="label-responsive"><?php esc_html_e( 'Start date:','advanced-export' ); ?></label>
 							<select name="post_start_date" id="post-start-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options(); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options(); ?>
 							</select>
-							<label for="post-end-date" class="label-responsive"><?php esc_html_e( 'End date:','wp-demo-export' ); ?></label>
+							<label for="post-end-date" class="label-responsive"><?php esc_html_e( 'End date:','advanced-export' ); ?></label>
 							<select name="post_end_date" id="post-end-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options(); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options(); ?>
 							</select>
 						</fieldset>
 					</li>
 					<li>
-						<label for="post-status" class="label-responsive"><?php esc_html_e( 'Status:','wp-demo-export'); ?></label>
+						<label for="post-status" class="label-responsive"><?php esc_html_e( 'Status:','advanced-export'); ?></label>
 						<select name="post_status" id="post-status">
-							<option value="0"><?php esc_html_e( 'All','wp-demo-export' ); ?></option>
+							<option value="0"><?php esc_html_e( 'All','advanced-export' ); ?></option>
 							<?php $post_stati = get_post_stati( array( 'internal' => false ), 'objects' );
 							foreach ( $post_stati as $status ) : ?>
 								<option value="<?php echo esc_attr( $status->name ); ?>"><?php echo esc_html( $status->label ); ?></option>
@@ -99,40 +99,40 @@ function wp_demo_export_form(){
 					</li>
 				</ul>
 
-				<p><label><input type="radio" name="content" value="pages" /> <?php esc_html_e( 'Pages','wp-demo-export' ); ?></label></p>
-				<ul id="page-filters" class="wp-demo-export-filters">
+				<p><label><input type="radio" name="content" value="pages" /> <?php esc_html_e( 'Pages','advanced-export' ); ?></label></p>
+				<ul id="page-filters" class="advanced-export-filters">
 					<li>
-						<label><span class="label-responsive"><?php esc_html_e( 'Authors:','wp-demo-export' ); ?></span>
+						<label><span class="label-responsive"><?php esc_html_e( 'Authors:','advanced-export' ); ?></span>
 							<?php
 							$authors = $wpdb->get_col( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = 'page'" );
 							wp_dropdown_users( array(
 								'include' => $authors,
 								'name' => 'page_author',
 								'multi' => true,
-								'show_option_all' =>esc_html__( 'All' ,'wp-demo-export'),
+								'show_option_all' =>esc_html__( 'All' ,'advanced-export'),
 								'show' => 'display_name_with_login',
 							) ); ?>
 						</label>
 					</li>
 					<li>
 						<fieldset>
-							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','wp-demo-export' ); ?></legend>
-							<label for="page-start-date" class="label-responsive"><?php esc_html_e( 'Start date:' ,'wp-demo-export'); ?></label>
+							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','advanced-export' ); ?></legend>
+							<label for="page-start-date" class="label-responsive"><?php esc_html_e( 'Start date:' ,'advanced-export'); ?></label>
 							<select name="page_start_date" id="page-start-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options( 'page' ); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options( 'page' ); ?>
 							</select>
-							<label for="page-end-date" class="label-responsive"><?php esc_html_e( 'End date:','wp-demo-export' ); ?></label>
+							<label for="page-end-date" class="label-responsive"><?php esc_html_e( 'End date:','advanced-export' ); ?></label>
 							<select name="page_end_date" id="page-end-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options( 'page' ); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options( 'page' ); ?>
 							</select>
 						</fieldset>
 					</li>
 					<li>
-						<label for="page-status" class="label-responsive"><?php esc_html_e( 'Status:','wp-demo-export' ); ?></label>
+						<label for="page-status" class="label-responsive"><?php esc_html_e( 'Status:','advanced-export' ); ?></label>
 						<select name="page_status" id="page-status">
-							<option value="0"><?php esc_html_e( 'All' ,'wp-demo-export'); ?></option>
+							<option value="0"><?php esc_html_e( 'All' ,'advanced-export'); ?></option>
 							<?php foreach ( $post_stati as $status ) : ?>
 								<option value="<?php echo esc_attr( $status->name ); ?>"><?php echo esc_html( $status->label ); ?></option>
 							<?php endforeach; ?>
@@ -144,20 +144,20 @@ function wp_demo_export_form(){
 					<p><label><input type="radio" name="content" value="<?php echo esc_attr( $post_type->name ); ?>" /> <?php echo esc_html( $post_type->label ); ?></label></p>
 				<?php endforeach; ?>
 
-				<p><label><input type="radio" name="content" value="attachment" /> <?php esc_html_e( 'Media','wp-demo-export' ); ?></label></p>
-				<ul id="attachment-filters" class="wp-demo-export-filters">
+				<p><label><input type="radio" name="content" value="attachment" /> <?php esc_html_e( 'Media','advanced-export' ); ?></label></p>
+				<ul id="attachment-filters" class="advanced-export-filters">
 					<li>
 						<fieldset>
-							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','wp-demo-export' ); ?></legend>
-							<label for="attachment-start-date" class="label-responsive"><?php esc_html_e( 'Start date:','wp-demo-export' ); ?></label>
+							<legend class="screen-reader-text"><?php esc_html_e( 'Date range:','advanced-export' ); ?></legend>
+							<label for="attachment-start-date" class="label-responsive"><?php esc_html_e( 'Start date:','advanced-export' ); ?></label>
 							<select name="attachment_start_date" id="attachment-start-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options( 'attachment' ); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options( 'attachment' ); ?>
 							</select>
-							<label for="attachment-end-date" class="label-responsive"><?php esc_html_e( 'End date:','wp-demo-export' ); ?></label>
+							<label for="attachment-end-date" class="label-responsive"><?php esc_html_e( 'End date:','advanced-export' ); ?></label>
 							<select name="attachment_end_date" id="attachment-end-date">
-								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','wp-demo-export' ); ?></option>
-								<?php wp_demo_export_date_options( 'attachment' ); ?>
+								<option value="0"><?php esc_html_e( '&mdash; Select &mdash;','advanced-export' ); ?></option>
+								<?php advanced_export_date_options( 'attachment' ); ?>
 							</select>
 						</fieldset>
 					</li>
@@ -166,19 +166,19 @@ function wp_demo_export_form(){
 			</fieldset>
 			<fieldset class="single-item">
 				<input type="checkbox" name="widgets_data" id="widgets_data" value="1" checked>
-				<label for="widgets_data" class="label-responsive"><?php esc_html_e( 'Widget Data','wp-demo-export' ); ?></label>
+				<label for="widgets_data" class="label-responsive"><?php esc_html_e( 'Widget Data','advanced-export' ); ?></label>
 			</fieldset>
 			<fieldset class="single-item">
 				<input type="checkbox" id="options_data" name="options_data" value="1" checked>
-				<label for="options_data" class="label-responsive"><?php esc_html_e( 'Customizer/Options Data','wp-demo-export' ); ?></label>
+				<label for="options_data" class="label-responsive"><?php esc_html_e( 'Customizer/Options Data','advanced-export' ); ?></label>
 			</fieldset>
             <fieldset class="single-item">
                 <input type="checkbox" name="include_media" id="include_media" value="1">
-                <label for="include_media" class="label-responsive"><?php esc_html_e( 'Include Media' ,'wp-demo-export'); ?></label>
+                <label for="include_media" class="label-responsive"><?php esc_html_e( 'Include Media' ,'advanced-export'); ?></label>
             </fieldset>
 			<?php
-			do_action( 'wp_demo_export_form' );
-			submit_button( esc_html__('Download Export File','wp-demo-export') );
+			do_action( 'advanced_export_form' );
+			submit_button( esc_html__('Download Export File','advanced-export') );
 			?>
 		</form>
 	</div>

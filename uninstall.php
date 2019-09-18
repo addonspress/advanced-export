@@ -16,7 +16,7 @@
  * @link       https://addonspress.com/
  * @since      1.0.0
  *
- * @package    Wp_Demo_Export
+ * @package    Advanced_Export
  */
 
 // If uninstall not called from WordPress, then exit.

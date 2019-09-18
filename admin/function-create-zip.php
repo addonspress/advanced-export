@@ -4,16 +4,16 @@
  *
  * @since    1.0.0
  */
-if( !function_exists( 'wp_demo_export_create_zip') ){
-	function wp_demo_export_create_zip( $source, $wp_filesystem ) {
+if( !function_exists( 'advanced_export_create_zip') ){
+	function advanced_export_create_zip( $source, $wp_filesystem ) {
 
 		/*Check if Zip Extension Installed*/
 		if( !class_exists( 'ZipArchive')){
-			die( esc_html__( 'ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!','wp-demo-export') );
+			die( esc_html__( 'ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!','advanced-export') );
 		}
 
 		$zip = new ZipArchive;
-		$zip_filename = esc_attr( get_option('template') ).'-demo-data';
+		$zip_filename = esc_attr( get_option('template') ).'-data';
 		$zip->open( $zip_filename, ZipArchive::CREATE && ZipArchive::OVERWRITE );
 
 		/*Create recursive directory iterator
@@ -51,8 +51,8 @@ if( !function_exists( 'wp_demo_export_create_zip') ){
  *
  * @since    1.0.0
  */
-if( !function_exists( 'wp_demo_export_create_demo_files') ){
-	function wp_demo_export_create_demo_files( $form_args ){
+if( !function_exists( 'advanced_export_create_data_files') ){
+	function advanced_export_create_data_files( $form_args ){
 
 		$defaults = array(
 			'content'       => 'all',
@@ -70,18 +70,18 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 		/**
 		 * Export hook
 		 */
-		do_action( 'wp_demo_export_before_create_demo_files', $form_args );
+		do_action( 'advanced_export_before_create_data_files', $form_args );
 
 		$content_data = array();
 		WP_Filesystem();
 		global $wp_filesystem;
 		$file_permission = 0777;
-		if ( !file_exists( WP_DEMO_EXPORT_TEMP ) ) {
-			$wp_filesystem->mkdir(WP_DEMO_EXPORT_TEMP, $file_permission, true);
+		if ( !file_exists( ADVANCED_EXPORT_TEMP ) ) {
+			$wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP, $file_permission, true);
 		}
 		if( 1 == $form_args['include_media'] ){
-			if ( !file_exists( WP_DEMO_EXPORT_TEMP_UPLOADS ) ) {
-				$wp_filesystem->mkdir(WP_DEMO_EXPORT_TEMP_UPLOADS, $file_permission, true);
+			if ( !file_exists( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
+				$wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP_UPLOADS, $file_permission, true);
 			}
 		}
 
@@ -101,7 +101,7 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 		$taxonomies = get_taxonomies();
 
 		/*ignore post type*/
-		$ignore_post_types = apply_filters('wp_demo_export_ignore_post_types',array( 'revision') );
+		$ignore_post_types = apply_filters('advanced_export_ignore_post_types',array( 'revision') );
 		foreach ( $post_types as $post_type ) {
 
 			/*ignore post type*/
@@ -164,12 +164,12 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 					$post_meta_data[ $post_meta_data_key ] = maybe_unserialize( get_post_meta( $single_post_data->ID, $post_meta_data_key, true ) );
 				}
 
-				/*copy save images in demo folder if include media*/
+				/*copy save images in exported folder if include media*/
 				if( 1 == $form_args['include_media'] && $post_type == 'attachment' ){
 					$file = get_attached_file( $single_post_data->ID );
 					if ( is_file( $file ) ) {
-						if ( is_dir( WP_DEMO_EXPORT_TEMP_UPLOADS ) ) {
-							copy( $file, WP_DEMO_EXPORT_TEMP_UPLOADS. basename( $file ) );
+						if ( is_dir( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
+							copy( $file, ADVANCED_EXPORT_TEMP_UPLOADS. basename( $file ) );
 						}
 					}
 				}
@@ -300,10 +300,10 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 		}
 
 		/*prepare files for zip*/
-		if ( is_dir( WP_DEMO_EXPORT_TEMP ) ) {
+		if ( is_dir( ADVANCED_EXPORT_TEMP ) ) {
 
 			/*content*/
-			$wp_filesystem->put_contents( WP_DEMO_EXPORT_TEMP . 'content.json' , json_encode( $content_data ) );
+			$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'content.json' , json_encode( $content_data ) );
 
 			/*widgets*/
 			if( 1 == $form_args['widgets_data'] ){
@@ -314,7 +314,7 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 				if( !empty( $widget_data ) ){
 					$combine_widgets_data['widget_options'] = $widget_data;
 				}
-				$wp_filesystem->put_contents( WP_DEMO_EXPORT_TEMP . 'widgets.json' , json_encode( $combine_widgets_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'widgets.json' , json_encode( $combine_widgets_data ) );
 			}
 
 			/*options/customizer*/
@@ -326,14 +326,14 @@ if( !function_exists( 'wp_demo_export_create_demo_files') ){
 				if( !empty( $options_data ) ){
 					$combine_options_data['options'] = $options_data;
 				}
-				$wp_filesystem->put_contents( WP_DEMO_EXPORT_TEMP . 'options.json' , json_encode( $combine_options_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'options.json' , json_encode( $combine_options_data ) );
 			}
 		}
-		wp_demo_export_create_zip( WP_DEMO_EXPORT_TEMP, $wp_filesystem);
+		advanced_export_create_zip( ADVANCED_EXPORT_TEMP, $wp_filesystem);
 	}
 }
-if( !function_exists( 'wp_demo_export_ziparchive') ){
-	function wp_demo_export_ziparchive( $form_args ){
-		wp_demo_export_create_demo_files( $form_args );
+if( !function_exists( 'advanced_export_ziparchive') ){
+	function advanced_export_ziparchive( $form_args ){
+		advanced_export_create_data_files( $form_args );
 	}
 }

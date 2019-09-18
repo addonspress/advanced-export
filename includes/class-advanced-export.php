@@ -9,8 +9,8 @@
  * @link       https://addonspress.com/
  * @since      1.0.0
  *
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/includes
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/includes
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/includes
  * @author     AddonsPress <addonspress.com>
  */
-class Wp_Demo_Export {
+class Advanced_Export {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Wp_Demo_Export {
 	 *
 	 * @since    1.0.0
 	 * @access   public
-	 * @var      Wp_Demo_Export_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Advanced_Export_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	public $loader;
 
@@ -62,7 +62,7 @@ class Wp_Demo_Export {
 	 *
 	 * @since    1.0.0
 	 * @access   public
-	 * @var      object Wp_Demo_Export_Admin    $admin
+	 * @var      object Advanced_Export_Admin    $admin
 	 */
 	public $admin;
 
@@ -71,24 +71,24 @@ class Wp_Demo_Export {
 	 *
 	 * @since    1.0.0
 	 * @access   public
-	 * @var      object Wp_Demo_Export_i18n    $plugin_i18n
+	 * @var      object Advanced_Export_i18n    $plugin_i18n
 	 */
 	public $plugin_i18n;
 
 	/**
-	 * Main Wp_Demo_Export Instance
+	 * Main Advanced_Export Instance
 	 *
-	 * Insures that only one instance of Wp_Demo_Export exists in memory at any one
+	 * Insures that only one instance of Advanced_Export exists in memory at any one
 	 * time. Also prevents needing to define globals all over the place.
 	 *
 	 * @since    1.0.0
 	 * @access   public
 	 *
-	 * @uses Wp_Demo_Export::setup_globals() Setup the globals needed
-	 * @uses Wp_Demo_Export::load_dependencies() Include the required files
-	 * @uses Wp_Demo_Export::set_locale() Setup language
-	 * @uses Wp_Demo_Export::define_admin_hooks() Setup admin hooks and actions
-	 * @uses Wp_Demo_Export::run() run
+	 * @uses Advanced_Export::setup_globals() Setup the globals needed
+	 * @uses Advanced_Export::load_dependencies() Include the required files
+	 * @uses Advanced_Export::set_locale() Setup language
+	 * @uses Advanced_Export::define_admin_hooks() Setup admin hooks and actions
+	 * @uses Advanced_Export::run() run
 	 * @return object
 	 */
 	public static function instance() {
@@ -98,7 +98,7 @@ class Wp_Demo_Export {
 
 		// Only run these methods if they haven't been ran previously
 		if ( null === $instance ) {
-			$instance = new Wp_Demo_Export;
+			$instance = new Advanced_Export;
 
 			$instance->setup_globals();
 			$instance->load_dependencies();
@@ -121,7 +121,7 @@ class Wp_Demo_Export {
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Wp_Demo_Export_i18n class in order to set the domain and to register the hook
+	 * Uses the Advanced_Export_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -129,15 +129,15 @@ class Wp_Demo_Export {
 	 */
 	private function setup_globals() {
 
-		$this->version = defined('WP_DEMO_EXPORT_VERSION')?WP_DEMO_EXPORT_VERSION:'1.0.0';
-		$this->plugin_name = 'wp-demo-export';
+		$this->version = defined('ADVANCED_EXPORT_VERSION')?ADVANCED_EXPORT_VERSION:'1.0.0';
+		$this->plugin_name = 'advanced-export';
 		
 		//The array of actions and filters registered with this plugins.
 		$this->actions = array();
 		$this->filters = array();
 
 		// Misc
-		$this->domain         = 'wp-demo-export';      // Unique identifier for retrieving translated strings
+		$this->domain         = 'advanced-export';      // Unique identifier for retrieving translated strings
 		$this->errors         = new WP_Error(); // errors
 	}
 
@@ -146,9 +146,9 @@ class Wp_Demo_Export {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Wp_Demo_Export_Loader. Orchestrates the hooks of the plugin.
-	 * - Wp_Demo_Export_i18n. Defines internationalization functionality.
-	 * - Wp_Demo_Export_Admin. Defines all hooks for the admin area.
+	 * - Advanced_Export_Loader. Orchestrates the hooks of the plugin.
+	 * - Advanced_Export_i18n. Defines internationalization functionality.
+	 * - Advanced_Export_Admin. Defines all hooks for the admin area.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -162,32 +162,32 @@ class Wp_Demo_Export {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once WP_DEMO_EXPORT_PATH . 'includes/class-wp-demo-export-loader.php';
+		require_once ADVANCED_EXPORT_PATH . 'includes/class-advanced-export-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once WP_DEMO_EXPORT_PATH . 'includes/class-wp-demo-export-i18n.php';
+		require_once ADVANCED_EXPORT_PATH . 'includes/class-advanced-export-i18n.php';
 
 		/**
 		 * Export Form
 		 */
-		require_once WP_DEMO_EXPORT_PATH . 'admin/function-form-load.php';
+		require_once ADVANCED_EXPORT_PATH . 'admin/function-form-load.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once WP_DEMO_EXPORT_PATH . 'admin/class-wp-demo-export-admin.php';
+		require_once ADVANCED_EXPORT_PATH . 'admin/class-advanced-export-admin.php';
 
-		$this->loader = new Wp_Demo_Export_Loader();
+		$this->loader = new Advanced_Export_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Wp_Demo_Export_i18n class in order to set the domain and to register the hook
+	 * Uses the Advanced_Export_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -195,7 +195,7 @@ class Wp_Demo_Export {
 	 */
 	private function set_locale() {
 
-		$this->plugin_i18n = new Wp_Demo_Export_i18n();
+		$this->plugin_i18n = new Advanced_Export_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $this->plugin_i18n, 'load_plugin_textdomain' );
 
@@ -210,13 +210,13 @@ class Wp_Demo_Export {
 	 */
 	private function define_admin_hooks() {
 
-		$this->admin = new Wp_Demo_Export_Admin( $this->get_plugin_name(), $this->get_version() );
+		$this->admin = new Advanced_Export_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $this->admin, 'export_menu' );
 		$this->loader->add_action( 'admin_init', $this->admin, 'export_content',1 );
-		$this->loader->add_action( 'wp_ajax_wp_demo_export_ajax_form_load', $this->admin, 'form_load' );
+		$this->loader->add_action( 'wp_ajax_advanced_export_ajax_form_load', $this->admin, 'form_load' );
 	}
 
 	/**
@@ -243,7 +243,7 @@ class Wp_Demo_Export {
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Wp_Demo_Export_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Advanced_Export_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

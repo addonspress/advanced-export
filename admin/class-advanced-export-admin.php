@@ -6,8 +6,8 @@
  * @link       https://addonspress.com/
  * @since      1.0.0
  *
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/admin
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/admin
  */
 
 /**
@@ -16,11 +16,11 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the admin-specific stylesheet and JavaScript.
  *
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/admin
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/admin
  * @author     AddonsPress <addonspress.com>
  */
-class Wp_Demo_Export_Admin {
+class Advanced_Export_Admin {
 
 	/**
 	 * The ID of this plugin.
@@ -69,8 +69,8 @@ class Wp_Demo_Export_Admin {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-		$this->page_slug = apply_filters( 'wp_demo_export_page_slug','demo-export' );
-		$this->export_capability = apply_filters( 'wp_demo_export_capability','export' );
+		$this->page_slug = apply_filters( 'advanced_export_page_slug','advanced-export' );
+		$this->export_capability = apply_filters( 'advanced_export_capability','export' );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class Wp_Demo_Export_Admin {
 	public function enqueue_styles( $hook_suffix ) {
 
 		if ( 'tools_page_'.$this->page_slug  == $hook_suffix ){
-			wp_enqueue_style( $this->plugin_name, WP_DEMO_EXPORT_URL . 'assets/css/wp-demo-export-admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, ADVANCED_EXPORT_URL . 'assets/css/advanced-export-admin.css', array(), $this->version, 'all' );
 		}
 	}
 
@@ -93,8 +93,8 @@ class Wp_Demo_Export_Admin {
 	public function enqueue_scripts( $hook_suffix ) {
 
 		if ( 'tools_page_'.$this->page_slug  == $hook_suffix ){
-			wp_enqueue_script( $this->plugin_name, WP_DEMO_EXPORT_URL . 'assets/js/wp-demo-export-admin.js', array( 'jquery' ), $this->version, false );
-			wp_localize_script( $this->plugin_name, 'wp_demo_export_js_object', array(
+			wp_enqueue_script( $this->plugin_name, ADVANCED_EXPORT_URL . 'assets/js/advanced-export-admin.js', array( 'jquery' ), $this->version, false );
+			wp_localize_script( $this->plugin_name, 'advanced_export_js_object', array(
 				'ajaxurl' => admin_url( 'admin-ajax.php' )
 			) );
 		}
@@ -106,7 +106,7 @@ class Wp_Demo_Export_Admin {
 	 * @since    1.0.0
 	 */
 	public function export_menu() {
-		add_management_page( esc_html__( 'Demo Export', 'wp-demo-export' ), esc_html__( 'Demo Export', 'wp-demo-export' ), $this->export_capability, $this->page_slug, array( $this, 'export_screen' ) );
+		add_management_page( esc_html__( 'Advanced Export', 'advanced-export' ), esc_html__( 'Advanced Export', 'advanced-export' ), $this->export_capability, $this->page_slug, array( $this, 'export_screen' ) );
 	}
 
 	/**
@@ -116,7 +116,7 @@ class Wp_Demo_Export_Admin {
 	 */
 	public function export_screen() {
 		?>
-		<div id="wp-demo-export-ajax-form-demo">
+		<div id="advanced-export-ajax-form-data">
 		</div>
 		<?php
 	}
@@ -127,12 +127,12 @@ class Wp_Demo_Export_Admin {
 	 * @since    1.0.0
 	 */
 	public function form_load() {
-		wp_demo_export_form();
+		advanced_export_form();
 		exit;
 	}
 
 	/**
-	 * Export Demo Content
+	 * Export Content
 	 *
 	 * @since    1.0.0
 	 */
@@ -141,14 +141,14 @@ class Wp_Demo_Export_Admin {
 			return;
 		}
 
-		// If the 'download' URL parameter is set, a Theme Demo ZIP export file returned.
-		if ( isset( $_POST['wp-demo-export-download'] ) ) {
+		// If the 'download' URL parameter is set, a Theme Data ZIP export file returned.
+		if ( isset( $_POST['advanced-export-download'] ) ) {
 			if ( !current_user_can( $this->export_capability ) ){
-				wp_die( esc_html__( 'Sorry, you are not allowed to export the content of this site.', 'wp-demo-export') );
+				wp_die( esc_html__( 'Sorry, you are not allowed to export the content of this site.', 'advanced-export') );
 			}
 
 			/*security check*/
-			check_admin_referer( 'wp-demo-export' );
+			check_admin_referer( 'advanced-export' );
 
 			$args = array();
 
@@ -215,8 +215,8 @@ class Wp_Demo_Export_Admin {
 			/**
 			 * Create zip
 			 */
-			require_once WP_DEMO_EXPORT_PATH . 'admin/function-create-zip.php';
-			wp_demo_export_ziparchive( $args );
+			require_once ADVANCED_EXPORT_PATH . 'admin/function-create-zip.php';
+			advanced_export_ziparchive( $args );
 			die();
 		}
 	}

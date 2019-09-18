@@ -6,8 +6,8 @@
  * @link       https://addonspress.com/
  * @since      1.0.0
  *
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/includes
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/includes
  */
 
 /**
@@ -17,11 +17,11 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @package    Wp_Demo_Export
- * @subpackage Wp_Demo_Export/includes
+ * @package    Advanced_Export
+ * @subpackage Advanced_Export/includes
  * @author     AddonsPress <addonspress.com>
  */
-class Wp_Demo_Export_Loader {
+class Advanced_Export_Loader {
 
 	/**
 	 * The array of actions registered with WordPress.
