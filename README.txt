@@ -49,7 +49,7 @@ There are two ways to install any Advanced Export Plugin:
 
 Yes, it is free plugin.
 
-= I have exported zip using [Advanced Export](https://wordpress.org/plugins/advanced-export/) plugin, now how to import on other sites ? =
+= I have exported zip using Advanced Export plugin, now how to import on other sites ? =
 
 After exported zip, you can import it using [Advanced Import](https://wordpress.org/plugins/advanced-import/) plugin
 
