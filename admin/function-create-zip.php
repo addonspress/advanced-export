@@ -75,15 +75,14 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		$content_data = array();
 		WP_Filesystem();
 		global $wp_filesystem;
-		$file_permission = 0777;
 		if ( !file_exists( ADVANCED_EXPORT_TEMP ) ) {
-			$wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP, $file_permission, true);
-		}
-		if( 1 == $form_args['include_media'] ){
-			if ( !file_exists( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
-				$wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP_UPLOADS, $file_permission, true);
-			}
-		}
+            $wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP);
+        }
+        if( 1 == $form_args['include_media'] ){
+            if ( !file_exists( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
+                $wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP_UPLOADS);
+            }
+        }
 
 		/*default post types*/
 		$post_types = array( 'attachment', 'post', 'page', 'nav_menu_item' );
