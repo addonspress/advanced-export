@@ -288,10 +288,9 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				$theme_mode
 			);
 			foreach ( $all_options as $name => $value ) {
-				if ( in_array( $name, $needed_options ) ) {
-					$options_data[ $name ] = maybe_unserialize( $value );
-					$options_data[ $name . '-child' ] = maybe_unserialize( $value );
-				}
+                $options_data[ $name ] = maybe_unserialize( $value );
+                $options_data[ $name . '-child' ] = maybe_unserialize( $value );
+
 				if( $name == $theme_mode ){
 					unset( $options_data[ $name ]['nav_menu_locations'] );
 				}
