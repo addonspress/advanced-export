@@ -287,10 +287,17 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				'page_for_posts',
 				$theme_mode
 			);
-			foreach ( $all_options as $name => $value ) {
-                $options_data[ $name ] = maybe_unserialize( $value );
-                $options_data[ $name . '-child' ] = maybe_unserialize( $value );
+            $needed_options = apply_filters('advanced_export_include_options',$needed_options );
 
+            foreach ( $all_options as $name => $value ) {
+                if( apply_filters('advanced_export_all_options',false ) ){
+                    $options_data[ $name ] = maybe_unserialize( $value );
+                    $options_data[ $name . '-child' ] = maybe_unserialize( $value );
+                }
+				else if ( in_array( $name, $needed_options )) {
+					$options_data[ $name ] = maybe_unserialize( $value );
+					$options_data[ $name . '-child' ] = maybe_unserialize( $value );
+				}
 				if( $name == $theme_mode ){
 					unset( $options_data[ $name ]['nav_menu_locations'] );
 				}

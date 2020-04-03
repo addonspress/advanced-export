@@ -1,16 +1,16 @@
-=== Advanced Export : with Options to Export Widget, Customizer and Media Files ===
+=== Advanced Export: Export WordPress Site Data Including Widget, Customizer & Media Files ===
 
-Contributors: addonspress
+Contributors: addonspress, codersantosh, acmeit
 Donate link: https://addonspress.com/
 Tags: export, advanced export, demo export, theme export, widget export, customizer export
 Requires at least: 4.5
-Tested up to: 5.2.3
+Tested up to: 5.4
 Requires PHP: 5.6.20
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Advanced Export is very flexible plugin which convenient user to export site data( posts, page, media and even widget and customizer option ) in zip format from their site.
+Advanced Export is a developer friendly WordPress plugin which gives flexibility to export site data in a zip format.
 
 == Description ==
 
@@ -42,7 +42,6 @@ There are two ways to install any Advanced Export Plugin:
 2.Extract Advanced Export and placed it to the "/wp-content/plugins/" directory.
     - Activate the plugin through the "Plugins" menu in WordPress.
 
-
 == Frequently Asked Questions ==
 
 = Is Advanced Export is free plugin ? =
@@ -53,7 +52,74 @@ Yes, it is free plugin.
 
 After exported zip, you can import it using [Advanced Import](https://wordpress.org/plugins/advanced-import/) plugin
 
+= All of the options are not exported by the plugin, how can I include them? =
+
+By default all options on options table does not exported by this plugin, since it contain a lot of information and all information does not needed.
+But you can use following hook to include all options:
+
+`add_action('advanced_export_all_options','prefix_add_all_options');
+function prefix_add_all_options(){
+    return true;
+}`
+
+It is not recommended to use this hook unless you are migrating your site.
+
+= Some option table are not exported, what is happening? =
+
+You can include needed options by using `advanced_export_include_options` filter hook
+
+`add_action('advanced_export_include_options','prefix_include_my_options');
+ function prefix_include_my_options( $included_options ){
+     $my_options = array(
+         'blogname',
+         'blogdescription',
+         'posts_per_page',
+         'date_format',
+         'time_format',
+         'show_on_front',
+         'thumbnail_size_w',
+         'thumbnail_size_h',
+         'thumbnail_crop',
+         'medium_size_w',
+         'medium_size_h',
+         'medium_large_size_w',
+         'medium_large_size_h',
+         'avatar_default',
+         'large_size_w',
+         'large_size_h',
+         'page_for_posts',
+         'page_on_front',
+         'woocommerce_shop_page_id',
+         'woocommerce_cart_page_id',
+         'woocommerce_checkout_page_id',
+         'woocommerce_myaccount_page_id',
+         'page_on_front',
+         'show_on_front',
+         'page_for_posts',
+     );
+     return array_unique (array_merge( $included_options, $my_options));
+ }`
+
+= Can you list all the hooks on the plugin? =
+
+Here are some important list of filter hooks:
+
+- advanced_export_page_slug
+- advanced_export_capability
+- advanced_export_ignore_post_types
+- advanced_export_include_options
+- advanced_export_all_options
+
+Here are some important list of action hooks:
+
+- advanced_export_before_create_data_files
+- advanced_export_form
+
 == Changelog ==
+
+= 1.0.2 - 2020-03-04 =
+* Update : Permission of ZIP
+* Update : Readme
 
 = 1.0.1 - 2019-09-29 =
 * Update : Some information
