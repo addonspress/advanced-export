@@ -4,9 +4,9 @@ Contributors: addonspress, codersantosh, acmeit
 Donate link: https://addonspress.com/
 Tags: export, advanced export, demo export, theme export, widget export, customizer export
 Requires at least: 4.5
-Tested up to: 5.4
+Tested up to: 5.4.2
 Requires PHP: 5.6.20
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -117,12 +117,15 @@ Here are some important list of action hooks:
 
 == Changelog ==
 
+= 1.0.3 - 2020-06-22 =
+* Updated : Export post types order
+
 = 1.0.2 - 2020-03-04 =
-* Update : Permission of ZIP
-* Update : Readme
+* Updated : Permission of ZIP
+* Updated : Readme
 
 = 1.0.1 - 2019-09-29 =
-* Update : Some information
+* Updated : Some information
 
 = 1.0.0 =
 * Initial release.
