@@ -212,15 +212,26 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				);
 			}
 		}
-
+		/*Array adjustment*/
 		/*put attachment at first*/
 		$attachment = isset( $content_data['attachment'] ) ? $content_data['attachment'] : array();
 		if ( $attachment ) {
 			unset( $content_data['attachment'] );
 			$content_data =  array('attachment' => $attachment ) + $content_data;
 		}
-
-		/*put nav_menu_item at very end.*/
+        /*Put post 3nd last*/
+        $post = isset( $content_data['post'] ) ? $content_data['post'] : array();
+        if ( $post ) {
+            unset( $content_data['post'] );
+            $content_data['post'] =  $post;
+        }
+        /*Put page 2nd last*/
+        $page = isset( $content_data['page'] ) ? $content_data['page'] : array();
+        if ( $page ) {
+            unset( $content_data['page'] );
+            $content_data['page'] =  $page;
+        }
+        /*Put nav last*/
 		$nav = isset( $content_data['nav_menu_item'] ) ? $content_data['nav_menu_item'] : array();
 		if ( $nav ) {
 			unset( $content_data['nav_menu_item'] );
