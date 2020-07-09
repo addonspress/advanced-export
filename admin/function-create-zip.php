@@ -298,6 +298,21 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				'page_for_posts',
 				$theme_mode
 			);
+
+			/*For Gutentor.*/
+			if( function_exists('run_gutentor')){
+                $args       = array(
+                    'orderby'    => 'id',
+                    'hide_empty' => 0,
+                );
+                $categories = get_categories( $args );
+                if ( $categories ) {
+                    foreach ( $categories as $category_list ) {
+                        $needed_options[] = 'gutentor-cat-' . $category_list->term_id;
+                    }
+                }
+            }
+
             $needed_options = apply_filters('advanced_export_include_options',$needed_options );
 
             foreach ( $all_options as $name => $value ) {
