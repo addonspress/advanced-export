@@ -298,6 +298,9 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				'page_for_posts',
 				$theme_mode
 			);
+			if( is_child_theme()){
+                $needed_options[] = 'theme_mods_'.get_option('stylesheet');
+            }
 
 			/*For Gutentor.*/
 			if( function_exists('run_gutentor')){
