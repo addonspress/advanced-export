@@ -129,16 +129,16 @@ class Advanced_Export {
 	 */
 	private function setup_globals() {
 
-		$this->version = defined('ADVANCED_EXPORT_VERSION')?ADVANCED_EXPORT_VERSION:'1.0.0';
+		$this->version     = defined( 'ADVANCED_EXPORT_VERSION' ) ? ADVANCED_EXPORT_VERSION : '1.0.0';
 		$this->plugin_name = 'advanced-export';
-		
+
 		//The array of actions and filters registered with this plugins.
 		$this->actions = array();
 		$this->filters = array();
 
 		// Misc
-		$this->domain         = 'advanced-export';      // Unique identifier for retrieving translated strings
-		$this->errors         = new WP_Error(); // errors
+		$this->domain = 'advanced-export';      // Unique identifier for retrieving translated strings
+		$this->errors = new WP_Error(); // errors
 	}
 
 	/**
@@ -215,7 +215,7 @@ class Advanced_Export {
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $this->admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $this->admin, 'export_menu' );
-		$this->loader->add_action( 'admin_init', $this->admin, 'export_content',1 );
+		$this->loader->add_action( 'admin_init', $this->admin, 'export_content', 1 );
 		$this->loader->add_action( 'wp_ajax_advanced_export_ajax_form_load', $this->admin, 'form_load' );
 	}
 

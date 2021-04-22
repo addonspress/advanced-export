@@ -32,5 +32,4 @@ class Advanced_Export_Activator {
 	public static function activate() {
 
 	}
-
 }

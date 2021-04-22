@@ -4,9 +4,9 @@ Contributors: addonspress, codersantosh, acmeit
 Donate link: https://addonspress.com/
 Tags: export, advanced export, demo export, theme export, widget export, customizer export
 Requires at least: 4.5
-Tested up to: 5.4.2
+Tested up to: 5.7.1
 Requires PHP: 5.6.20
-Stable tag: 1.0.3
+Stable tag: 1.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -116,6 +116,9 @@ Here are some important list of action hooks:
 - advanced_export_form
 
 == Changelog ==
+
+= 1.0.4 - 2021-04-22 =
+* Updated : PHPCS
 
 = 1.0.3 - 2020-06-22 =
 * Updated : Export post types order

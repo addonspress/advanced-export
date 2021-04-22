@@ -32,5 +32,4 @@ class Advanced_Export_Deactivator {
 	public static function deactivate() {
 
 	}
-
 }

@@ -4,33 +4,33 @@
  *
  * @since    1.0.0
  */
-if( !function_exists( 'advanced_export_create_zip') ){
+if ( ! function_exists( 'advanced_export_create_zip' ) ) {
 	function advanced_export_create_zip( $source, $wp_filesystem ) {
 
 		/*Check if Zip Extension Installed*/
-		if( !class_exists( 'ZipArchive')){
-			die( esc_html__( 'ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!','advanced-export') );
+		if ( ! class_exists( 'ZipArchive' ) ) {
+			die( esc_html__( 'ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!', 'advanced-export' ) );
 		}
 
-		$zip = new ZipArchive;
-		$zip_filename = esc_attr( get_option('template') ).'-data';
+		$zip          = new ZipArchive;
+		$zip_filename = esc_attr( get_option( 'template' ) ) . '-data';
 		$zip->open( $zip_filename, ZipArchive::CREATE && ZipArchive::OVERWRITE );
 
 		/*Create recursive directory iterator
 		https://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php */
 		$files = new RecursiveIteratorIterator(
-			new RecursiveDirectoryIterator($source),
+			new RecursiveDirectoryIterator( $source ),
 			RecursiveIteratorIterator::LEAVES_ONLY
 		);
 		foreach ( $files as $name => $file ) {
 			/*Skip directories (they would be added automatically)*/
-			if ( !$file->isDir() ) {
+			if ( ! $file->isDir() ) {
 				/*Get real and relative path for current file*/
-				$filePath = $file->getRealPath();
-				$relativePath = substr($filePath, strlen($source));
+				$filePath     = $file->getRealPath();
+				$relativePath = substr( $filePath, strlen( $source ) );
 
 				/*Add current file/directory to archive*/
-				$zip->addFile( $filePath, $relativePath);
+				$zip->addFile( $filePath, $relativePath );
 			}
 		}
 		$zip->close();
@@ -40,8 +40,8 @@ if( !function_exists( 'advanced_export_create_zip') ){
 		readfile( $zip_filename );
 
 		/*delete temp zip files*/
-		$wp_filesystem->rmdir($zip_filename, true );
-		$wp_filesystem->rmdir($source, true );
+		$wp_filesystem->rmdir( $zip_filename, true );
+		$wp_filesystem->rmdir( $source, true );
 		die();
 	}
 }
@@ -51,10 +51,10 @@ if( !function_exists( 'advanced_export_create_zip') ){
  *
  * @since    1.0.0
  */
-if( !function_exists( 'advanced_export_create_data_files') ){
-	function advanced_export_create_data_files( $form_args ){
+if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
+	function advanced_export_create_data_files( $form_args ) {
 
-		$defaults = array(
+		$defaults  = array(
 			'content'       => 'all',
 			'author'        => false,
 			'category'      => false,
@@ -63,7 +63,7 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 			'status'        => false,
 			'include_media' => false,
 			'widgets_data'  => false,
-			'options_data'  => false
+			'options_data'  => false,
 		);
 		$form_args = wp_parse_args( $form_args, $defaults );
 
@@ -75,32 +75,31 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		$content_data = array();
 		WP_Filesystem();
 		global $wp_filesystem;
-		if ( !file_exists( ADVANCED_EXPORT_TEMP ) ) {
-            $wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP);
-        }
-        if( 1 == $form_args['include_media'] ){
-            if ( !file_exists( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
-                $wp_filesystem->mkdir(ADVANCED_EXPORT_TEMP_UPLOADS);
-            }
-        }
+		if ( ! file_exists( ADVANCED_EXPORT_TEMP ) ) {
+			$wp_filesystem->mkdir( ADVANCED_EXPORT_TEMP );
+		}
+		if ( 1 == $form_args['include_media'] ) {
+			if ( ! file_exists( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
+				$wp_filesystem->mkdir( ADVANCED_EXPORT_TEMP_UPLOADS );
+			}
+		}
 
 		/*default post types*/
 		$post_types = array( 'attachment', 'post', 'page', 'nav_menu_item' );
 
 		if ( 'all' != $form_args['content'] && post_type_exists( $form_args['content'] ) ) {
 			$post_type_object = get_post_type_object( $form_args['content'] );
-			if ( $post_type_object->can_export ){
+			if ( $post_type_object->can_export ) {
 				$post_types = array( $form_args['content'] );
 			}
-		}
-		else {
+		} else {
 			$post_types = get_post_types( array( 'can_export' => true ) );
 		}
 
 		$taxonomies = get_taxonomies();
 
 		/*ignore post type*/
-		$ignore_post_types = apply_filters('advanced_export_ignore_post_types',array( 'revision') );
+		$ignore_post_types = apply_filters( 'advanced_export_ignore_post_types', array( 'revision' ) );
 		foreach ( $post_types as $post_type ) {
 
 			/*ignore post type*/
@@ -108,13 +107,15 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				continue;
 			}
 			/*default args*/
-			$args = array( 'post_type' => $post_type, 'posts_per_page' => - 1 );
+			$args = array(
+				'post_type'      => $post_type,
+				'posts_per_page' => - 1,
+			);
 
 			/*setting post status*/
-			if ( $form_args['status'] && ( 'post' == $post_type || 'page' == $post_type ) ){
+			if ( $form_args['status'] && ( 'post' == $post_type || 'page' == $post_type ) ) {
 				$args['post_status'] = $form_args['status'];
-			}
-			else{
+			} else {
 				$args['post_status'] = 'any';
 			}
 
@@ -127,10 +128,10 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 
 			/*setting date and author*/
 			if ( 'post' == $post_type || 'page' == $post_type || 'attachment' == $post_type ) {
-				if ( $form_args['author'] ){
+				if ( $form_args['author'] ) {
 					$args['author'] = $form_args['post_author'];
 				}
-				if ( $form_args['start_date'] &&  $form_args['end_date'] ) {
+				if ( $form_args['start_date'] && $form_args['end_date'] ) {
 					$args['date_query'] = array(
 						'after'     => $form_args['start_date'],
 						'before'    => $form_args['end_date'],
@@ -149,8 +150,7 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 
 			if ( $object && isset( $object->labels->name ) && ! empty( $object->labels->name ) ) {
 				$type_title = $object->labels->name;
-			}
-			else {
+			} else {
 				$type_title = ucwords( $post_type );
 			}
 
@@ -164,11 +164,11 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				}
 
 				/*copy save images in exported folder if include media*/
-				if( 1 == $form_args['include_media'] && $post_type == 'attachment' ){
+				if ( 1 == $form_args['include_media'] && $post_type == 'attachment' ) {
 					$file = get_attached_file( $single_post_data->ID );
 					if ( is_file( $file ) ) {
 						if ( is_dir( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
-							copy( $file, ADVANCED_EXPORT_TEMP_UPLOADS. basename( $file ) );
+							copy( $file, ADVANCED_EXPORT_TEMP_UPLOADS . basename( $file ) );
 						}
 					}
 				}
@@ -177,14 +177,14 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				$terms_data = array();
 				foreach ( $taxonomies as $taxonomy ) {
 					$terms_data[ $taxonomy ] = wp_get_post_terms( $single_post_data->ID, $taxonomy, array( 'fields' => 'all' ) );
-					if( $terms_data[$taxonomy] ){
-						foreach( $terms_data[$taxonomy] as $tax_id => $single_term ){
-							if( !empty( $single_term->term_id ) ) {
-								$terms_data[ $taxonomy ][ $tax_id ] -> meta = get_term_meta( $single_term->term_id );
-								if( !empty( $terms_data[ $taxonomy ][ $tax_id ] -> meta ) ){
-									foreach( $terms_data[ $taxonomy ][ $tax_id ] -> meta as $key=>$val ){
-										if( is_array( $val ) && count( $val ) == 1 && isset($val[0] ) ){
-											$terms_data[ $taxonomy ][ $tax_id ] -> meta[$key] = $val[0];
+					if ( $terms_data[ $taxonomy ] ) {
+						foreach ( $terms_data[ $taxonomy ] as $tax_id => $single_term ) {
+							if ( ! empty( $single_term->term_id ) ) {
+								$terms_data[ $taxonomy ][ $tax_id ]->meta = get_term_meta( $single_term->term_id );
+								if ( ! empty( $terms_data[ $taxonomy ][ $tax_id ]->meta ) ) {
+									foreach ( $terms_data[ $taxonomy ][ $tax_id ]->meta as $key => $val ) {
+										if ( is_array( $val ) && count( $val ) == 1 && isset( $val[0] ) ) {
+											$terms_data[ $taxonomy ][ $tax_id ]->meta[ $key ] = $val[0];
 										}
 									}
 								}
@@ -208,7 +208,7 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 					'guid'           => $single_post_data->guid,
 					'post_mime_type' => $single_post_data->post_mime_type,
 					'meta'           => $post_meta_data,
-					'terms'          => $terms_data
+					'terms'          => $terms_data,
 				);
 			}
 		}
@@ -217,21 +217,21 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		$attachment = isset( $content_data['attachment'] ) ? $content_data['attachment'] : array();
 		if ( $attachment ) {
 			unset( $content_data['attachment'] );
-			$content_data =  array('attachment' => $attachment ) + $content_data;
+			$content_data = array( 'attachment' => $attachment ) + $content_data;
 		}
-        /*Put post 3nd last*/
-        $post = isset( $content_data['post'] ) ? $content_data['post'] : array();
-        if ( $post ) {
-            unset( $content_data['post'] );
-            $content_data['post'] =  $post;
-        }
-        /*Put page 2nd last*/
-        $page = isset( $content_data['page'] ) ? $content_data['page'] : array();
-        if ( $page ) {
-            unset( $content_data['page'] );
-            $content_data['page'] =  $page;
-        }
-        /*Put nav last*/
+		/*Put post 3nd last*/
+		$post = isset( $content_data['post'] ) ? $content_data['post'] : array();
+		if ( $post ) {
+			unset( $content_data['post'] );
+			$content_data['post'] = $post;
+		}
+		/*Put page 2nd last*/
+		$page = isset( $content_data['page'] ) ? $content_data['page'] : array();
+		if ( $page ) {
+			unset( $content_data['page'] );
+			$content_data['page'] = $page;
+		}
+		/*Put nav last*/
 		$nav = isset( $content_data['nav_menu_item'] ) ? $content_data['nav_menu_item'] : array();
 		if ( $nav ) {
 			unset( $content_data['nav_menu_item'] );
@@ -239,13 +239,13 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		}
 
 		/*export widget settings.*/
-		if( 1 == $form_args['widgets_data'] ){
+		if ( 1 == $form_args['widgets_data'] ) {
 			$sidebars_widgets = get_option( 'sidebars_widgets' );
-			$widget_data   = array();
+			$widget_data      = array();
 			foreach ( $sidebars_widgets as $sidebar_name => $widgets ) {
 				if ( is_array( $widgets ) ) {
 					foreach ( $widgets as $widget_name ) {
-						$widget_name_strip                    = preg_replace( '#-\d+$#', '', $widget_name );
+						$widget_name_strip                 = preg_replace( '#-\d+$#', '', $widget_name );
 						$widget_data[ $widget_name_strip ] = get_option( 'widget_' . $widget_name_strip );
 					}
 				}
@@ -253,23 +253,23 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		}
 
 		/*export options and nav*/
-		if( 1 == $form_args['options_data'] ){
+		if ( 1 == $form_args['options_data'] ) {
 			/*nav menu data*/
-			$menus    = get_terms( 'nav_menu' );
+			$menus           = get_terms( 'nav_menu' );
 			$theme_locations = get_nav_menu_locations();
-			$menu_data = array();
+			$menu_data       = array();
 			foreach ( $menus as $menu ) {
-				foreach ( $theme_locations as $key => $theme_location ){
-					if( $menu->term_id == $theme_location ){
-						$menu_data[$key] = $menu->term_id;
+				foreach ( $theme_locations as $key => $theme_location ) {
+					if ( $menu->term_id == $theme_location ) {
+						$menu_data[ $key ] = $menu->term_id;
 					}
 				}
 			}
 
 			/*get all options*/
-			$all_options = wp_load_alloptions();
-			$theme_mode = 'theme_mods_'.get_option('template');
-			$options_data = array();
+			$all_options    = wp_load_alloptions();
+			$theme_mode     = 'theme_mods_' . get_option( 'template' );
+			$options_data   = array();
 			$needed_options = array(
 				'blogname',
 				'blogdescription',
@@ -296,38 +296,37 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 				'page_on_front',
 				'show_on_front',
 				'page_for_posts',
-				$theme_mode
+				$theme_mode,
 			);
-			if( is_child_theme()){
-                $needed_options[] = 'theme_mods_'.get_option('stylesheet');
-            }
+			if ( is_child_theme() ) {
+				$needed_options[] = 'theme_mods_' . get_option( 'stylesheet' );
+			}
 
 			/*For Gutentor.*/
-			if( function_exists('run_gutentor')){
-                $args       = array(
-                    'orderby'    => 'id',
-                    'hide_empty' => 0,
-                );
-                $categories = get_categories( $args );
-                if ( $categories ) {
-                    foreach ( $categories as $category_list ) {
-                        $needed_options[] = 'gutentor-cat-' . $category_list->term_id;
-                    }
-                }
-            }
+			if ( function_exists( 'run_gutentor' ) ) {
+				$args       = array(
+					'orderby'    => 'id',
+					'hide_empty' => 0,
+				);
+				$categories = get_categories( $args );
+				if ( $categories ) {
+					foreach ( $categories as $category_list ) {
+						$needed_options[] = 'gutentor-cat-' . $category_list->term_id;
+					}
+				}
+			}
 
-            $needed_options = apply_filters('advanced_export_include_options',$needed_options );
+			$needed_options = apply_filters( 'advanced_export_include_options', $needed_options );
 
-            foreach ( $all_options as $name => $value ) {
-                if( apply_filters('advanced_export_all_options',false ) ){
-                    $options_data[ $name ] = maybe_unserialize( $value );
-                    $options_data[ $name . '-child' ] = maybe_unserialize( $value );
-                }
-				else if ( in_array( $name, $needed_options )) {
-					$options_data[ $name ] = maybe_unserialize( $value );
+			foreach ( $all_options as $name => $value ) {
+				if ( apply_filters( 'advanced_export_all_options', false ) ) {
+					$options_data[ $name ]            = maybe_unserialize( $value );
+					$options_data[ $name . '-child' ] = maybe_unserialize( $value );
+				} elseif ( in_array( $name, $needed_options ) ) {
+					$options_data[ $name ]            = maybe_unserialize( $value );
 					$options_data[ $name . '-child' ] = maybe_unserialize( $value );
 				}
-				if( $name == $theme_mode ){
+				if ( $name == $theme_mode ) {
 					unset( $options_data[ $name ]['nav_menu_locations'] );
 				}
 			}
@@ -337,37 +336,37 @@ if( !function_exists( 'advanced_export_create_data_files') ){
 		if ( is_dir( ADVANCED_EXPORT_TEMP ) ) {
 
 			/*content*/
-			$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'content.json' , json_encode( $content_data ) );
+			$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'content.json', json_encode( $content_data ) );
 
 			/*widgets*/
-			if( 1 == $form_args['widgets_data'] ){
+			if ( 1 == $form_args['widgets_data'] ) {
 				$combine_widgets_data = array();
-				if( !empty( $sidebars_widgets) ){
+				if ( ! empty( $sidebars_widgets ) ) {
 					$combine_widgets_data['widget_positions'] = $sidebars_widgets;
 				}
-				if( !empty( $widget_data ) ){
+				if ( ! empty( $widget_data ) ) {
 					$combine_widgets_data['widget_options'] = $widget_data;
 				}
-				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'widgets.json' , json_encode( $combine_widgets_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'widgets.json', json_encode( $combine_widgets_data ) );
 			}
 
 			/*options/customizer*/
-			if( 1 == $form_args['options_data'] ){
+			if ( 1 == $form_args['options_data'] ) {
 				$combine_options_data = array();
-				if( !empty( $menu_data ) ){
+				if ( ! empty( $menu_data ) ) {
 					$combine_options_data['menu'] = $menu_data;
 				}
-				if( !empty( $options_data ) ){
+				if ( ! empty( $options_data ) ) {
 					$combine_options_data['options'] = $options_data;
 				}
-				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'options.json' , json_encode( $combine_options_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'options.json', json_encode( $combine_options_data ) );
 			}
 		}
-		advanced_export_create_zip( ADVANCED_EXPORT_TEMP, $wp_filesystem);
+		advanced_export_create_zip( ADVANCED_EXPORT_TEMP, $wp_filesystem );
 	}
 }
-if( !function_exists( 'advanced_export_ziparchive') ){
-	function advanced_export_ziparchive( $form_args ){
+if ( ! function_exists( 'advanced_export_ziparchive' ) ) {
+	function advanced_export_ziparchive( $form_args ) {
 		advanced_export_create_data_files( $form_args );
 	}
 }

@@ -67,10 +67,10 @@ class Advanced_Export_Admin {
 	 */
 	public function __construct( $plugin_name, $version ) {
 
-		$this->plugin_name = $plugin_name;
-		$this->version = $version;
-		$this->page_slug = apply_filters( 'advanced_export_page_slug','advanced-export' );
-		$this->export_capability = apply_filters( 'advanced_export_capability','export' );
+		$this->plugin_name       = $plugin_name;
+		$this->version           = $version;
+		$this->page_slug         = apply_filters( 'advanced_export_page_slug', 'advanced-export' );
+		$this->export_capability = apply_filters( 'advanced_export_capability', 'export' );
 	}
 
 	/**
@@ -80,7 +80,7 @@ class Advanced_Export_Admin {
 	 */
 	public function enqueue_styles( $hook_suffix ) {
 
-		if ( 'tools_page_'.$this->page_slug  == $hook_suffix ){
+		if ( 'tools_page_' . $this->page_slug == $hook_suffix ) {
 			wp_enqueue_style( $this->plugin_name, ADVANCED_EXPORT_URL . 'assets/css/advanced-export-admin.css', array(), $this->version, 'all' );
 		}
 	}
@@ -92,11 +92,15 @@ class Advanced_Export_Admin {
 	 */
 	public function enqueue_scripts( $hook_suffix ) {
 
-		if ( 'tools_page_'.$this->page_slug  == $hook_suffix ){
+		if ( 'tools_page_' . $this->page_slug == $hook_suffix ) {
 			wp_enqueue_script( $this->plugin_name, ADVANCED_EXPORT_URL . 'assets/js/advanced-export-admin.js', array( 'jquery' ), $this->version, false );
-			wp_localize_script( $this->plugin_name, 'advanced_export_js_object', array(
-				'ajaxurl' => admin_url( 'admin-ajax.php' )
-			) );
+			wp_localize_script(
+				$this->plugin_name,
+				'advanced_export_js_object',
+				array(
+					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+				)
+			);
 		}
 	}
 
@@ -143,8 +147,8 @@ class Advanced_Export_Admin {
 
 		// If the 'download' URL parameter is set, a Theme Data ZIP export file returned.
 		if ( isset( $_POST['advanced-export-download'] ) ) {
-			if ( !current_user_can( $this->export_capability ) ){
-				wp_die( esc_html__( 'Sorry, you are not allowed to export the content of this site.', 'advanced-export') );
+			if ( ! current_user_can( $this->export_capability ) ) {
+				wp_die( esc_html__( 'Sorry, you are not allowed to export the content of this site.', 'advanced-export' ) );
 			}
 
 			/*security check*/
@@ -154,61 +158,57 @@ class Advanced_Export_Admin {
 
 			if ( ! isset( $_POST['content'] ) || 'all' == $_POST['content'] ) {
 				$args['content'] = 'all';
-			}
-			elseif ( 'posts' == $_POST['content'] ) {
+			} elseif ( 'posts' == $_POST['content'] ) {
 				$args['content'] = 'post';
 
-				if ( $_POST['cat'] ){
-					$args['category'] = absint( $_POST['cat'] ) ;
-                }
+				if ( $_POST['cat'] ) {
+					$args['category'] = absint( $_POST['cat'] );
+				}
 
-				if ( $_POST['post_author'] ){
+				if ( $_POST['post_author'] ) {
 					$args['author'] = absint( $_POST['post_author'] );
-                }
+				}
 
 				if ( $_POST['post_start_date'] || $_POST['post_end_date'] ) {
 					$args['start_date'] = sanitize_text_field( $_POST['post_start_date'] );
-					$args['end_date'] = sanitize_text_field( $_POST['post_end_date'] );
+					$args['end_date']   = sanitize_text_field( $_POST['post_end_date'] );
 				}
 
-				if ( $_POST['post_status'] ){
-					$args['status'] = sanitize_text_field ( $_POST['post_status'] );
-                }
-			}
-			elseif ( 'pages' == $_POST['content'] ) {
+				if ( $_POST['post_status'] ) {
+					$args['status'] = sanitize_text_field( $_POST['post_status'] );
+				}
+			} elseif ( 'pages' == $_POST['content'] ) {
 				$args['content'] = 'page';
 
-				if ( $_POST['page_author'] ){
+				if ( $_POST['page_author'] ) {
 					$args['author'] = absint( $_POST['page_author'] );
-                }
+				}
 
 				if ( $_POST['page_start_date'] || $_POST['page_end_date'] ) {
 					$args['start_date'] = sanitize_text_field( $_POST['page_start_date'] );
-					$args['end_date'] = sanitize_text_field ( $_POST['page_end_date'] );
+					$args['end_date']   = sanitize_text_field( $_POST['page_end_date'] );
 				}
 
-				if ( $_POST['page_status'] ){
+				if ( $_POST['page_status'] ) {
 					$args['status'] = sanitize_text_field( $_POST['page_status'] );
-                }
-			}
-			elseif ( 'attachment' == $_POST['content'] ) {
+				}
+			} elseif ( 'attachment' == $_POST['content'] ) {
 				$args['content'] = 'attachment';
 
 				if ( $_POST['attachment_start_date'] || $_POST['attachment_end_date'] ) {
 					$args['start_date'] = sanitize_text_field( $_POST['attachment_start_date'] );
-					$args['end_date'] = sanitize_text_field( $_POST['attachment_end_date'] );
+					$args['end_date']   = sanitize_text_field( $_POST['attachment_end_date'] );
 				}
+			} else {
+				$args['content'] = sanitize_text_field( $_POST['content'] );
 			}
-			else {
-				$args['content'] = sanitize_text_field ( $_POST['content'] );
-			}
-			if( isset( $_POST['include_media'] ) &&  $_POST['include_media'] == 1 ){
+			if ( isset( $_POST['include_media'] ) && $_POST['include_media'] == 1 ) {
 				$args['include_media'] = 1;
 			}
-			if( isset( $_POST['widgets_data'] ) &&  $_POST['widgets_data'] == 1 ){
+			if ( isset( $_POST['widgets_data'] ) && $_POST['widgets_data'] == 1 ) {
 				$args['widgets_data'] = 1;
 			}
-			if( isset( $_POST['options_data'] ) &&  $_POST['options_data'] == 1 ){
+			if ( isset( $_POST['options_data'] ) && $_POST['options_data'] == 1 ) {
 				$args['options_data'] = 1;
 			}
 
