@@ -115,6 +115,10 @@ Here are some important list of action hooks:
 - advanced_export_before_create_data_files
 - advanced_export_form
 
+== Screenshots ==
+
+1. Export Main Screen
+
 == Changelog ==
 
 = 1.0.4 - 2021-04-22 =
