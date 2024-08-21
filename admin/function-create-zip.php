@@ -12,11 +12,12 @@ if ( ! function_exists( 'advanced_export_create_zip' ) ) {
 			die( esc_html__( 'ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!', 'advanced-export' ) );
 		}
 
-		$zip          = new ZipArchive;
+		$zip          = new ZipArchive();
 		$zip_filename = esc_attr( get_option( 'template' ) ) . '-data';
 		$zip->open( $zip_filename, ZipArchive::CREATE && ZipArchive::OVERWRITE );
 
-		/*Create recursive directory iterator
+		/*
+		Create recursive directory iterator
 		https://stackoverflow.com/questions/4914750/how-to-zip-a-whole-folder-using-php */
 		$files = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator( $source ),
@@ -212,7 +213,8 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 				);
 			}
 		}
-		/*Array adjustment*/
+		/*
+		Array adjustment*/
 		/*put attachment at first*/
 		$attachment = isset( $content_data['attachment'] ) ? $content_data['attachment'] : array();
 		if ( $attachment ) {
@@ -336,7 +338,7 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 		if ( is_dir( ADVANCED_EXPORT_TEMP ) ) {
 
 			/*content*/
-			$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'content.json', json_encode( $content_data ) );
+			$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'content.json', wp_json_encode( $content_data ) );
 
 			/*widgets*/
 			if ( 1 == $form_args['widgets_data'] ) {
@@ -347,7 +349,7 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 				if ( ! empty( $widget_data ) ) {
 					$combine_widgets_data['widget_options'] = $widget_data;
 				}
-				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'widgets.json', json_encode( $combine_widgets_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'widgets.json', wp_json_encode( $combine_widgets_data ) );
 			}
 
 			/*options/customizer*/
@@ -359,7 +361,7 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 				if ( ! empty( $options_data ) ) {
 					$combine_options_data['options'] = $options_data;
 				}
-				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'options.json', json_encode( $combine_options_data ) );
+				$wp_filesystem->put_contents( ADVANCED_EXPORT_TEMP . 'options.json', wp_json_encode( $combine_options_data ) );
 			}
 		}
 		advanced_export_create_zip( ADVANCED_EXPORT_TEMP, $wp_filesystem );
