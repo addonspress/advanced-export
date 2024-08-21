@@ -62,8 +62,8 @@ class Advanced_Export_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $plugin_name       The name of this plugin.
-	 * @param      string    $version    The version of this plugin.
+	 * @param      string $plugin_name       The name of this plugin.
+	 * @param      string $version    The version of this plugin.
 	 */
 	public function __construct( $plugin_name, $version ) {
 
@@ -71,6 +71,29 @@ class Advanced_Export_Admin {
 		$this->version           = $version;
 		$this->page_slug         = apply_filters( 'advanced_export_page_slug', 'advanced-export' );
 		$this->export_capability = apply_filters( 'advanced_export_capability', 'export' );
+	}
+
+	/**
+	 * Add plugin menu items.
+	 *
+	 * @access public
+	 *
+	 * @since 1.0.0
+	 * @param string[] $actions     An array of plugin action links. By default this can include
+	 *                              'activate', 'deactivate', and 'delete'. With Multisite active
+	 *                              this can also include 'network_active' and 'network_only' items.
+	 * @param string   $plugin_file Path to the plugin file relative to the plugins directory.
+	 * @param array    $plugin_data An array of plugin data. See get_plugin_data()
+	 *                              and the {@see 'plugin_row_meta'} filter for the list
+	 *                              of possible values.
+	 * @param string   $context     The plugin context. By default this can include 'all',
+	 *                              'active', 'inactive', 'recently_activated', 'upgrade',
+	 *                              'mustuse', 'dropins', and 'search'.
+	 * @return array settings schema for this plugin.
+	 */
+	public function add_plugin_links( $actions, $plugin_file, $plugin_data, $context ) {
+		$actions[] = '<a href="' . esc_url( menu_page_url( $this->page_slug, false ) ) . '">' . esc_html__( 'Export', 'advanced-export' ) . '</a>';
+		return $actions;
 	}
 
 	/**

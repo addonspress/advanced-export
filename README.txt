@@ -2,11 +2,11 @@
 
 Contributors: addonspress, codersantosh, acmeit
 Donate link: https://addonspress.com/
-Tags: export, advanced export, demo export, theme export, widget export, customizer export
+Tags: advanced export, demo export, theme export, widget export, customizer export
 Requires at least: 5.0
-Tested up to: 6.5
+Tested up to: 6.6
 Requires PHP: 5.6.20
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -120,6 +120,10 @@ Here are some important list of action hooks:
 1. Export Main Screen
 
 == Changelog ==
+
+= 1.0.9 - 2024-08-21 =
+* Updated : WordPress version
+* Added : Plugin action link
 
 = 1.0.8 - 2024-04-07 =
 * Updated : WordPress version

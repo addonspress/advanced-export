@@ -98,7 +98,7 @@ class Advanced_Export {
 
 		// Only run these methods if they haven't been ran previously
 		if ( null === $instance ) {
-			$instance = new Advanced_Export;
+			$instance = new Advanced_Export();
 
 			$instance->setup_globals();
 			$instance->load_dependencies();
@@ -132,7 +132,7 @@ class Advanced_Export {
 		$this->version     = defined( 'ADVANCED_EXPORT_VERSION' ) ? ADVANCED_EXPORT_VERSION : '1.0.0';
 		$this->plugin_name = 'advanced-export';
 
-		//The array of actions and filters registered with this plugins.
+		// The array of actions and filters registered with this plugins.
 		$this->actions = array();
 		$this->filters = array();
 
@@ -181,7 +181,6 @@ class Advanced_Export {
 		require_once ADVANCED_EXPORT_PATH . 'admin/class-advanced-export-admin.php';
 
 		$this->loader = new Advanced_Export_Loader();
-
 	}
 
 	/**
@@ -198,7 +197,6 @@ class Advanced_Export {
 		$this->plugin_i18n = new Advanced_Export_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $this->plugin_i18n, 'load_plugin_textdomain' );
-
 	}
 
 	/**
@@ -217,6 +215,7 @@ class Advanced_Export {
 		$this->loader->add_action( 'admin_menu', $this->admin, 'export_menu' );
 		$this->loader->add_action( 'admin_init', $this->admin, 'export_content', 1 );
 		$this->loader->add_action( 'wp_ajax_advanced_export_ajax_form_load', $this->admin, 'form_load' );
+		$this->loader->add_filter( 'plugin_action_links_advanced-export/advanced-export.php', $this->admin, 'add_plugin_links', 10, 4 );
 	}
 
 	/**
