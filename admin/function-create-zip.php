@@ -38,7 +38,8 @@ if ( ! function_exists( 'advanced_export_create_zip' ) ) {
 
 		header( 'Content-type: application/zip' );
 		header( sprintf( 'Content-Disposition: attachment; filename="%s.zip"', $zip_filename ) );
-		readfile( $zip_filename );
+		/* https://wordpress.stackexchange.com/a/133423/78627 */
+		readfile( $zip_filename );//phpcs:ignore
 
 		/*delete temp zip files*/
 		$wp_filesystem->rmdir( $zip_filename, true );
