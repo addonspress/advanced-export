@@ -14,7 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Plugin Name:       Advanced Export
  * Plugin URI:        https://addonspress.com/item/advanced-export
  * Description:       Advanced Export with Options to Export Widget, Customizer and Media Files
- * Version:           1.0.9
+ * Version:           1.1.0
  * Author:            AddonsPress
  * Author URI:        https://addonspress.com/
  * License:           GPL-2.0+
@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  */
 
 /*Define Constants for this plugin*/
-define( 'ADVANCED_EXPORT_VERSION', '1.0.9' );
+define( 'ADVANCED_EXPORT_VERSION', '1.1.0' );
 define( 'ADVANCED_EXPORT_PATH', plugin_dir_path( __FILE__ ) );
 define( 'ADVANCED_EXPORT_URL', plugin_dir_url( __FILE__ ) );
 
