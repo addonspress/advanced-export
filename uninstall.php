@@ -25,12 +25,12 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Clean up temp directories and files.
-$upload_dir = wp_upload_dir();
-$temp_dir   = $upload_dir['basedir'] . '/advanced-export-temp/';
+$advanced_export_upload_dir = wp_upload_dir();
+$advanced_export_temp_dir   = $advanced_export_upload_dir['basedir'] . '/advanced-export-temp/';
 
 WP_Filesystem();
 global $wp_filesystem;
 
-if ( $wp_filesystem && $wp_filesystem->exists( $temp_dir ) ) {
-	$wp_filesystem->rmdir( $temp_dir, true );
+if ( $wp_filesystem && $wp_filesystem->exists( $advanced_export_temp_dir ) ) {
+	$wp_filesystem->rmdir( $advanced_export_temp_dir, true );
 }
