@@ -1,4 +1,4 @@
-=== Advanced Export: Export WordPress Site Data Including Widget, Customizer & Media Files ===
+=== Advanced Export ===
 
 Contributors: addonspress, codersantosh, acmeit
 Donate link: https://addonspress.com/
