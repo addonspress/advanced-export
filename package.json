@@ -1,0 +1,11 @@
+{
+  "name": "advanced-export",
+  "version": "2.0.0",
+  "description": "Advanced Export with Options to Export Widget, Customizer and Media Files",
+  "scripts": {
+    "build": "echo 'No build step required — assets are hand-written.'",
+    "deploy": "npm run build && node deploy.js"
+  },
+  "author": "addonspress",
+  "license": "GPL-2.0+"
+}
