@@ -13,8 +13,8 @@ if ( ! function_exists( 'advanced_export_create_zip' ) ) {
 		}
 
 		$zip          = new ZipArchive();
-		$zip_filename = esc_attr( get_option( 'template' ) ) . '-data';
-		$zip->open( $zip_filename, ZipArchive::CREATE && ZipArchive::OVERWRITE );
+		$zip_filename = ADVANCED_EXPORT_TEMP . sanitize_file_name( get_option( 'template' ) ) . '-data.zip';
+		$zip->open( $zip_filename, ZipArchive::CREATE | ZipArchive::OVERWRITE );
 
 		/*
 		Create recursive directory iterator
@@ -36,13 +36,16 @@ if ( ! function_exists( 'advanced_export_create_zip' ) ) {
 		}
 		$zip->close();
 
+		if ( ! file_exists( $zip_filename ) ) {
+			wp_die( esc_html__( 'Unable to create the export zip file.', 'advanced-export' ) );
+		}
+
 		header( 'Content-type: application/zip' );
-		header( sprintf( 'Content-Disposition: attachment; filename="%s.zip"', $zip_filename ) );
+		header( sprintf( 'Content-Disposition: attachment; filename="%s"', basename( $zip_filename ) ) );
 		/* https://wordpress.stackexchange.com/a/133423/78627 */
 		readfile( $zip_filename );//phpcs:ignore
 
-		/*delete temp zip files*/
-		$wp_filesystem->rmdir( $zip_filename, true );
+		/*delete temp files and directories*/
 		$wp_filesystem->rmdir( $source, true );
 		die();
 	}
@@ -131,7 +134,7 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 			/*setting date and author*/
 			if ( 'post' == $post_type || 'page' == $post_type || 'attachment' == $post_type ) {
 				if ( $form_args['author'] ) {
-					$args['author'] = $form_args['post_author'];
+					$args['author'] = $form_args['author'];
 				}
 				if ( $form_args['start_date'] && $form_args['end_date'] ) {
 					$args['date_query'] = array(
@@ -170,7 +173,7 @@ if ( ! function_exists( 'advanced_export_create_data_files' ) ) {
 					$file = get_attached_file( $single_post_data->ID );
 					if ( is_file( $file ) ) {
 						if ( is_dir( ADVANCED_EXPORT_TEMP_UPLOADS ) ) {
-							copy( $file, ADVANCED_EXPORT_TEMP_UPLOADS . basename( $file ) );
+							$wp_filesystem->copy( $file, ADVANCED_EXPORT_TEMP_UPLOADS . basename( $file ) );
 						}
 					}
 				}

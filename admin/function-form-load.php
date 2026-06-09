@@ -4,7 +4,6 @@
  *
  * @param string $post_type The post type. Default 'post'.
  */
-global $wpdb, $wp_locale;
 if ( ! function_exists( 'advanced_export_date_options' ) ) {
 	function advanced_export_date_options( $post_type = 'post' ) {
 		global $wpdb, $wp_locale;
@@ -37,6 +36,7 @@ if ( ! function_exists( 'advanced_export_date_options' ) ) {
 	}
 }
 
+if ( ! function_exists( 'advanced_export_form' ) ) {
 function advanced_export_form() {
 	global $wpdb, $wp_locale;
 	?>
@@ -62,14 +62,14 @@ function advanced_export_form() {
 				<p><label><input type="radio" name="content" value="posts" /> <?php esc_html_e( 'Posts', 'advanced-export' ); ?></label></p>
 				<ul id="post-filters" class="advanced-export-filters">
 					<li>
-						<label><span class="label-responsive"><?php _e( 'Categories:' ); ?></span>
+						<label><span class="label-responsive"><?php esc_html_e( 'Categories:', 'advanced-export' ); ?></span>
 							<?php wp_dropdown_categories( array( 'show_option_all' => esc_html__( 'All', 'advanced-export' ) ) ); ?>
 						</label>
 					</li>
 					<li>
 						<label><span class="label-responsive"><?php esc_html_e( 'Authors:', 'advanced-export' ); ?></span>
 							<?php
-							$authors = $wpdb->get_col( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = 'post'" );
+							$authors = $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = %s", 'post' ) );
 							wp_dropdown_users(
 								array(
 									'include'         => $authors,
@@ -116,7 +116,7 @@ function advanced_export_form() {
 					<li>
 						<label><span class="label-responsive"><?php esc_html_e( 'Authors:', 'advanced-export' ); ?></span>
 							<?php
-							$authors = $wpdb->get_col( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = 'page'" );
+							$authors = $wpdb->get_col( $wpdb->prepare( "SELECT DISTINCT post_author FROM {$wpdb->posts} WHERE post_type = %s", 'page' ) );
 							wp_dropdown_users(
 								array(
 									'include'         => $authors,
@@ -206,4 +206,5 @@ function advanced_export_form() {
 		</form>
 	</div>
 	<?php
+}
 }
