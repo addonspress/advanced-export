@@ -1,0 +1,179 @@
+=== Advanced Export: Export WordPress Site Data Including Widget, Customizer & Media Files ===
+
+Contributors: addonspress, codersantosh, acmeit
+Donate link: https://addonspress.com/
+Tags: advanced export, demo export, theme export, widget export, customizer export
+Requires at least: 5.5
+Tested up to: 7.0
+Requires PHP: 7.4
+Stable tag: 2.0.0
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+Advanced Export is a developer friendly WordPress plugin which gives flexibility to export site data in a zip format.
+
+== Description ==
+
+Advanced Export is one of the best and powerful data exporter plugin. It has number of features which make more manageable and convenient to WordPress user to exact their WordPress site data and again re-use in another website.
+
+Exported Zip can be imported by using plugin [Advanced Import](https://wordpress.org/plugins/advanced-import/)
+
+It is designed specially for theme developer who want to provide demo data to their customer but it can be also use for migration purpose too.
+
+Some listed features of Advanced Export are given below :
+
+* Export widget
+* Export option
+* Export media,
+* Export pages,
+* Export post
+* Export custom post type
+* Export actual media files
+
+== Dashboard Location ==
+
+Dashboard -> Tool -> Advanced Export
+
+== Installation ==
+
+There are two ways to install any Advanced Export Plugin:
+
+1.Upload zip file from Dashboard->Plugin->Add New "upload plugin".
+2.Extract Advanced Export and placed it to the "/wp-content/plugins/" directory.
+    - Activate the plugin through the "Plugins" menu in WordPress.
+
+== Frequently Asked Questions ==
+
+= Is Advanced Export is free plugin ? =
+
+Yes, it is free plugin.
+
+= I have exported zip using Advanced Export plugin, now how to import on other sites ? =
+
+After exported zip, you can import it using [Advanced Import](https://wordpress.org/plugins/advanced-import/) plugin
+
+= All of the options are not exported by the plugin, how can I include them? =
+
+By default all options on options table does not exported by this plugin, since it contain a lot of information and all information does not needed.
+But you can use following hook to include all options:
+
+`add_action('advanced_export_all_options','prefix_add_all_options');
+function prefix_add_all_options(){
+    return true;
+}`
+
+It is not recommended to use this hook unless you are migrating your site.
+
+= Some option table are not exported, what is happening? =
+
+You can include needed options by using `advanced_export_include_options` filter hook
+
+`add_action('advanced_export_include_options','prefix_include_my_options');
+ function prefix_include_my_options( $included_options ){
+     $my_options = array(
+         'blogname',
+         'blogdescription',
+         'posts_per_page',
+         'date_format',
+         'time_format',
+         'show_on_front',
+         'thumbnail_size_w',
+         'thumbnail_size_h',
+         'thumbnail_crop',
+         'medium_size_w',
+         'medium_size_h',
+         'medium_large_size_w',
+         'medium_large_size_h',
+         'avatar_default',
+         'large_size_w',
+         'large_size_h',
+         'page_for_posts',
+         'page_on_front',
+         'woocommerce_shop_page_id',
+         'woocommerce_cart_page_id',
+         'woocommerce_checkout_page_id',
+         'woocommerce_myaccount_page_id',
+         'page_on_front',
+         'show_on_front',
+         'page_for_posts',
+     );
+     return array_unique (array_merge( $included_options, $my_options));
+ }`
+
+= Can you list all the hooks on the plugin? =
+
+Here are some important list of filter hooks:
+
+- advanced_export_page_slug
+- advanced_export_capability
+- advanced_export_ignore_post_types
+- advanced_export_include_options
+- advanced_export_all_options
+
+Here are some important list of action hooks:
+
+- advanced_export_before_create_data_files
+- advanced_export_form
+
+== Screenshots ==
+
+1. Export Main Screen
+
+== Changelog ==
+
+= 2.0.0 =
+* Security: Added nonce verification to AJAX form load handler.
+* Security: Added capability check to AJAX form load handler.
+* Security: Added `wp_unslash()` to all `$_POST` and `$_GET` superglobal accesses.
+* Security: Added proper `isset()` / `! empty()` guards to all form field reads.
+* Security: Replaced native `copy()` with `$wp_filesystem->copy()` for file operations.
+* Security: Fixed zip file path traversal risk — `sanitize_file_name()` now used instead of `esc_attr()`.
+* Security: Zip file now written to plugin temp directory instead of server CWD.
+* Bug Fix: Fixed `ZipArchive` flags — logical `&&` replaced with bitwise `|` so `OVERWRITE` works.
+* Bug Fix: Removed `$wp_filesystem->rmdir()` call on a file — zip now lives inside temp dir and is cleaned up by recursive directory removal.
+* Bug Fix: Fixed `$form_args['post_author']` misspelling — changed to `$form_args['author']` so post author filtering works.
+* Bug Fix: Fixed `readfile()` with no error handling — added `file_exists()` check.
+* Bug Fix: Fixed `_e( 'Categories:' )` missing text domain — now `esc_html_e( 'Categories:', 'advanced-export' )`.
+* Enhancement: Added `Requires PHP: 7.4` header to main plugin file.
+* Enhancement: Updated `Tested up to: 7.0` and `Requires PHP: 7.4` in readme.txt.
+* Enhancement: Added `function_exists()` guard to `advanced_export_form()`.
+* Enhancement: Moved file-scope `global $wpdb, $wp_locale` declarations inside functions.
+* Enhancement: Converted inline `$wpdb->get_col()` calls to use `$wpdb->prepare()` for consistency.
+* Enhancement: `uninstall.php` now cleans up temp directories and plugin options.
+* Enhancement: JavaScript AJAX call now uses nonce from localized `wp_localize_script` data.
+
+= 1.1.0 - 2024-11-12 =
+* Updated : WordPress version
+* Updated : Language folder
+
+= 1.0.9 - 2024-08-21 =
+* Updated : WordPress version
+* Added : Plugin action link
+
+= 1.0.8 - 2024-04-07 =
+* Updated : WordPress version
+
+= 1.0.7 - 2022-05-26 =
+* Updated : WordPress version
+
+= 1.0.6 - 2022-02-04 =
+* Updated : WordPress version
+
+= 1.0.5 - 2022-01-05 =
+* Updated : WordPress version
+
+= 1.0.4 - 2021-04-22 =
+* Updated : PHPCS
+
+= 1.0.3 - 2020-06-22 =
+* Updated : Export post types order
+
+= 1.0.2 - 2020-03-04 =
+* Updated : Permission of ZIP
+* Updated : Readme
+
+= 1.0.1 - 2019-09-29 =
+* Updated : Some information
+
+= 1.0.0 =
+* Initial release.
