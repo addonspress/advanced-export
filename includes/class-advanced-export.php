@@ -76,6 +76,42 @@ class Advanced_Export {
 	public $plugin_i18n;
 
 	/**
+	 * The array of actions registered with WordPress.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @var      array    $actions    The actions registered with WordPress.
+	 */
+	private $actions;
+
+	/**
+	 * The array of filters registered with WordPress.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @var      array    $filters    The filters registered with WordPress.
+	 */
+	private $filters;
+
+	/**
+	 * The text domain for internationalization.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @var      string    $domain    The text domain.
+	 */
+	private $domain;
+
+	/**
+	 * WP_Error object for storing errors.
+	 *
+	 * @since    2.0.0
+	 * @access   private
+	 * @var      WP_Error    $errors    Errors.
+	 */
+	private $errors;
+
+	/**
 	 * Main Advanced_Export Instance
 	 *
 	 * Insures that only one instance of Advanced_Export exists in memory at any one

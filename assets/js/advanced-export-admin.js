@@ -17,13 +17,10 @@
 
     /*form load by ajax*/
     function ajax_page_load() {
-        var fd = new FormData(),
-            _wpnonce = $(this).find('input[name=_wpnonce]'),
-            _wp_http_referer = $(this).find('input[name=_wp_http_referer]');
+        var fd = new FormData();
 
         fd.append('action', 'advanced_export_ajax_form_load');
-        fd.append('_wpnonce', _wpnonce.val());
-        fd.append('_wp_http_referer', _wp_http_referer.val());
+        fd.append('_wpnonce', advanced_export_js_object.nonce);
 
         $.ajax({
             type: 'POST',

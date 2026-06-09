@@ -122,6 +122,7 @@ class Advanced_Export_Admin {
 				'advanced_export_js_object',
 				array(
 					'ajaxurl' => admin_url( 'admin-ajax.php' ),
+					'nonce'   => wp_create_nonce( 'advanced-export' ),
 				)
 			);
 		}
@@ -154,6 +155,12 @@ class Advanced_Export_Admin {
 	 * @since    1.0.0
 	 */
 	public function form_load() {
+		check_ajax_referer( 'advanced-export', '_wpnonce' );
+
+		if ( ! current_user_can( $this->export_capability ) ) {
+			wp_die( esc_html__( 'Sorry, you are not allowed to load the export form.', 'advanced-export' ) );
+		}
+
 		advanced_export_form();
 		exit;
 	}
@@ -164,7 +171,7 @@ class Advanced_Export_Admin {
 	 * @since    1.0.0
 	 */
 	public function export_content() {
-		if ( empty( $_GET['page'] ) || $this->page_slug !== $_GET['page'] ) {
+		if ( empty( $_GET['page'] ) || $this->page_slug !== sanitize_key( wp_unslash( $_GET['page'] ) ) ) {
 			return;
 		}
 
@@ -179,59 +186,61 @@ class Advanced_Export_Admin {
 
 			$args = array();
 
-			if ( ! isset( $_POST['content'] ) || 'all' == $_POST['content'] ) {
+			$post_content = isset( $_POST['content'] ) ? sanitize_text_field( wp_unslash( $_POST['content'] ) ) : '';
+
+			if ( empty( $post_content ) || 'all' === $post_content ) {
 				$args['content'] = 'all';
-			} elseif ( 'posts' == $_POST['content'] ) {
+			} elseif ( 'posts' === $post_content ) {
 				$args['content'] = 'post';
 
-				if ( $_POST['cat'] ) {
-					$args['category'] = absint( $_POST['cat'] );
+				if ( ! empty( $_POST['cat'] ) ) {
+					$args['category'] = absint( wp_unslash( $_POST['cat'] ) );
 				}
 
-				if ( $_POST['post_author'] ) {
-					$args['author'] = absint( $_POST['post_author'] );
+				if ( ! empty( $_POST['post_author'] ) ) {
+					$args['author'] = absint( wp_unslash( $_POST['post_author'] ) );
 				}
 
-				if ( $_POST['post_start_date'] || $_POST['post_end_date'] ) {
-					$args['start_date'] = sanitize_text_field( $_POST['post_start_date'] );
-					$args['end_date']   = sanitize_text_field( $_POST['post_end_date'] );
+				if ( ! empty( $_POST['post_start_date'] ) || ! empty( $_POST['post_end_date'] ) ) {
+					$args['start_date'] = sanitize_text_field( wp_unslash( $_POST['post_start_date'] ) );
+					$args['end_date']   = sanitize_text_field( wp_unslash( $_POST['post_end_date'] ) );
 				}
 
-				if ( $_POST['post_status'] ) {
-					$args['status'] = sanitize_text_field( $_POST['post_status'] );
+				if ( ! empty( $_POST['post_status'] ) ) {
+					$args['status'] = sanitize_text_field( wp_unslash( $_POST['post_status'] ) );
 				}
-			} elseif ( 'pages' == $_POST['content'] ) {
+			} elseif ( 'pages' === $post_content ) {
 				$args['content'] = 'page';
 
-				if ( $_POST['page_author'] ) {
-					$args['author'] = absint( $_POST['page_author'] );
+				if ( ! empty( $_POST['page_author'] ) ) {
+					$args['author'] = absint( wp_unslash( $_POST['page_author'] ) );
 				}
 
-				if ( $_POST['page_start_date'] || $_POST['page_end_date'] ) {
-					$args['start_date'] = sanitize_text_field( $_POST['page_start_date'] );
-					$args['end_date']   = sanitize_text_field( $_POST['page_end_date'] );
+				if ( ! empty( $_POST['page_start_date'] ) || ! empty( $_POST['page_end_date'] ) ) {
+					$args['start_date'] = sanitize_text_field( wp_unslash( $_POST['page_start_date'] ) );
+					$args['end_date']   = sanitize_text_field( wp_unslash( $_POST['page_end_date'] ) );
 				}
 
-				if ( $_POST['page_status'] ) {
-					$args['status'] = sanitize_text_field( $_POST['page_status'] );
+				if ( ! empty( $_POST['page_status'] ) ) {
+					$args['status'] = sanitize_text_field( wp_unslash( $_POST['page_status'] ) );
 				}
-			} elseif ( 'attachment' == $_POST['content'] ) {
+			} elseif ( 'attachment' === $post_content ) {
 				$args['content'] = 'attachment';
 
-				if ( $_POST['attachment_start_date'] || $_POST['attachment_end_date'] ) {
-					$args['start_date'] = sanitize_text_field( $_POST['attachment_start_date'] );
-					$args['end_date']   = sanitize_text_field( $_POST['attachment_end_date'] );
+				if ( ! empty( $_POST['attachment_start_date'] ) || ! empty( $_POST['attachment_end_date'] ) ) {
+					$args['start_date'] = sanitize_text_field( wp_unslash( $_POST['attachment_start_date'] ) );
+					$args['end_date']   = sanitize_text_field( wp_unslash( $_POST['attachment_end_date'] ) );
 				}
 			} else {
-				$args['content'] = sanitize_text_field( $_POST['content'] );
+				$args['content'] = $post_content;
 			}
-			if ( isset( $_POST['include_media'] ) && $_POST['include_media'] == 1 ) {
+			if ( isset( $_POST['include_media'] ) && 1 === absint( wp_unslash( $_POST['include_media'] ) ) ) {
 				$args['include_media'] = 1;
 			}
-			if ( isset( $_POST['widgets_data'] ) && $_POST['widgets_data'] == 1 ) {
+			if ( isset( $_POST['widgets_data'] ) && 1 === absint( wp_unslash( $_POST['widgets_data'] ) ) ) {
 				$args['widgets_data'] = 1;
 			}
-			if ( isset( $_POST['options_data'] ) && $_POST['options_data'] == 1 ) {
+			if ( isset( $_POST['options_data'] ) && 1 === absint( wp_unslash( $_POST['options_data'] ) ) ) {
 				$args['options_data'] = 1;
 			}
 
