@@ -1,0 +1,149 @@
+# Copyright (C) 2024 AddonsPress
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: Advanced Export 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/advanced-export\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-11-12T14:00:32+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.6.0\n"
+"X-Domain: advanced-export\n"
+
+#. Plugin Name of the plugin
+#: admin/class-advanced-export-admin.php:136
+msgid "Advanced Export"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://addonspress.com/item/advanced-export"
+msgstr ""
+
+#. Description of the plugin
+msgid "Advanced Export with Options to Export Widget, Customizer and Media Files"
+msgstr ""
+
+#. Author of the plugin
+msgid "AddonsPress"
+msgstr ""
+
+#. Author URI of the plugin
+msgid "https://addonspress.com/"
+msgstr ""
+
+#: admin/class-advanced-export-admin.php:95
+msgid "Export"
+msgstr ""
+
+#: admin/class-advanced-export-admin.php:174
+msgid "Sorry, you are not allowed to export the content of this site."
+msgstr ""
+
+#: admin/function-create-zip.php:12
+msgid "ZIP extension is not installed, please install ZIP extension on your host or contact to your hosting provider and try again!"
+msgstr ""
+
+#: admin/function-form-load.php:44
+msgid "Export Zip"
+msgstr ""
+
+#: admin/function-form-load.php:46
+msgid "When you click the button below Plugin will create a Zip file to save to your computer."
+msgstr ""
+
+#: admin/function-form-load.php:47
+msgid "Once you&#8217;ve saved the download zip file, you can use the Import function in another WordPress installation to import the content from this site."
+msgstr ""
+
+#: admin/function-form-load.php:49
+msgid "Choose what to export"
+msgstr ""
+
+#: admin/function-form-load.php:54
+msgid "Content to export"
+msgstr ""
+
+#: admin/function-form-load.php:57
+msgid "All content"
+msgstr ""
+
+#: admin/function-form-load.php:59
+msgid "This will contain all of your posts, pages, comments, custom fields, terms, navigation menus, and custom posts."
+msgstr ""
+
+#: admin/function-form-load.php:62
+msgid "Posts"
+msgstr ""
+
+#: admin/function-form-load.php:66
+#: admin/function-form-load.php:78
+#: admin/function-form-load.php:103
+#: admin/function-form-load.php:125
+#: admin/function-form-load.php:150
+msgid "All"
+msgstr ""
+
+#: admin/function-form-load.php:70
+#: admin/function-form-load.php:117
+msgid "Authors:"
+msgstr ""
+
+#: admin/function-form-load.php:87
+#: admin/function-form-load.php:134
+#: admin/function-form-load.php:174
+msgid "Date range:"
+msgstr ""
+
+#: admin/function-form-load.php:88
+#: admin/function-form-load.php:135
+#: admin/function-form-load.php:175
+msgid "Start date:"
+msgstr ""
+
+#: admin/function-form-load.php:90
+#: admin/function-form-load.php:95
+#: admin/function-form-load.php:137
+#: admin/function-form-load.php:142
+#: admin/function-form-load.php:177
+#: admin/function-form-load.php:182
+msgid "&mdash; Select &mdash;"
+msgstr ""
+
+#: admin/function-form-load.php:93
+#: admin/function-form-load.php:140
+#: admin/function-form-load.php:180
+msgid "End date:"
+msgstr ""
+
+#: admin/function-form-load.php:101
+#: admin/function-form-load.php:148
+msgid "Status:"
+msgstr ""
+
+#: admin/function-form-load.php:114
+msgid "Pages"
+msgstr ""
+
+#: admin/function-form-load.php:170
+msgid "Media"
+msgstr ""
+
+#: admin/function-form-load.php:192
+msgid "Widget Data"
+msgstr ""
+
+#: admin/function-form-load.php:196
+msgid "Customizer/Options Data"
+msgstr ""
+
+#: admin/function-form-load.php:200
+msgid "Include Media"
+msgstr ""
+
+#: admin/function-form-load.php:204
+msgid "Download Export File"
+msgstr ""

@@ -14,8 +14,6 @@ const PRODUCTION_FILES = [
 	'index.php',
 	'LICENSE.txt',
 	'readme.txt',
-	'README.md',
-	'AGENTS.md',
 	'admin',
 	'includes',
 	'languages',
